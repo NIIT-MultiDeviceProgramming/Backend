@@ -5,4 +5,4 @@ COMMAND TO RUN
 Inside backend folder: 
 * npm install
 * npm run
-** Install all the dependencies which will be shown in the from of errors in the terminal.
+* Install all the dependencies which will be shown in the from of errors in the terminal.
