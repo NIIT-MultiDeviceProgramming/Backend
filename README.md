@@ -3,5 +3,5 @@ This is the initial backend of the e-commerce website. In this the connection to
 
 COMMAND TO RUN 
 Inside backend folder: npm install
-                       npm run
+npm run
 * Install all the dependencies which will be shown in the from of errors in the terminal.
