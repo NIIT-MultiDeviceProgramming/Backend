@@ -17,11 +17,12 @@ app.options('*',cors());
 app.use(express.json());
 app.use(morgan('tiny'));
 
+
 //routes
 const productsRoutes = require('./routes/products') ;
 const categoriesRoutes = require('./routes/categories');
 const ordersRoutes = require('./routes/orders');
-const productsRoute = require('./routes/products');
+
 const usersRoutes = require('./routes/users')
 
 const api = process.env.API_URL;
@@ -41,7 +42,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 })
 
 //server
-app.listen(3000, ()=>{
+app.listen(8888, ()=>{
     console.log(api)
-    console.log('Server running on http://127.0.0.1:3000');
+    console.log('Server running on http://127.0.0.1:8888');
 })
