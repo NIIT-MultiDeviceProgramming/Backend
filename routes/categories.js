@@ -2,8 +2,9 @@ const {Category} = require('../models/category');
 const express = require('express');
 const router = express.Router();
 
+//To get the ouput list of categories
 router.get(`/`, async (req, res) =>{
-    const categoryList = await Category.find();
+    const categoryList = await Category.find();//To make it wait till it gets the categories
 
     if(!categoryList) {
         res.status(500).json({success: false})
@@ -11,6 +12,7 @@ router.get(`/`, async (req, res) =>{
     res.status(200).send(categoryList);
 })
 
+//To get the ouput of single category
 router.get('/:id', async (req, res) =>{
     const category = await Category.findById(req.params.id);
 
@@ -20,6 +22,7 @@ router.get('/:id', async (req, res) =>{
     res.status(200).send(category);
 })
 
+//To get all the input to creat new categories
 router.post('/', async (req, res) =>{
     let category = new Category({
         name: req.body.name,
@@ -34,6 +37,7 @@ router.post('/', async (req, res) =>{
     res.send(category);
 })
 
+//To updated a specific category
 router.put('/:id', async (req, res)=> {
     const category = await Category.findByIdAndUpdate(
         req.params.id,
@@ -51,6 +55,8 @@ router.put('/:id', async (req, res)=> {
     res.send(category);
 })
 
+
+//To delete a specific category
 router.delete('/:id', (req, res) =>{
     Category.findByIdAndRemove(req.params.id).then(category =>{
         if(category) {

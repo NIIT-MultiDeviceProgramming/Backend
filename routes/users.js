@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+//To get the ouput list of categories
 router.get(`/`, async (req, res) =>{
     const userList = await User.find().select('-passwordHash');
 
@@ -22,12 +23,13 @@ router.get('/:id', async (req, res) =>{
     res.status(200).send(user);
 })
 
+//To get all the input to creat new categories  d3aef52f15f743b11208622749143519877b2b95
 router.post('/', async (req, res) =>{
     let user = new User({
         name: req.body.name,
         email: req.body.email,
         color: req.body.color,
-        passwordHash:bcrypt.hashSync(req.body.password, 10),
+        passwordHash: bcrypt.hashSync(req.body.password, 10),//We have hashed the passowrd incase our database becomes vulnerable and omeone without athourity would be able to see our data  d3aef52f15f743b11208622749143519877b2b95
         phone: req.body.phone,
         isAdmin: req.body.isAdmin,
         apartment: req.body.apartment,

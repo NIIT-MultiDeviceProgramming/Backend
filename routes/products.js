@@ -4,6 +4,7 @@ const {Category} = require('../models/category');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+//To get the ouput list of product
 router.get(`/`, async (req, res) =>{
     //localhost:<port>/api/v1/products?categories = 2222,5555
     let filter ={};
@@ -20,6 +21,7 @@ router.get(`/`, async (req, res) =>{
     res.send(productList);
 })
 
+//To get the ouput of single product
 router.get(`/:id`, async (req, res) =>{
     const product = await Product.findById(req.params.id).populate('category');
 
@@ -29,9 +31,10 @@ router.get(`/:id`, async (req, res) =>{
     res.send(product);
 })
 
+//To get all the input to creat new product
 router.post(`/`, async (req, res) =>{
     const category = await Category.findById(req.body.category);
-    if(!category) return res.status(400).send('Invalid Category')
+    if(!category) return res.status(400).send('Invalid Category')//To get a valid category
 
     let product = new Product({
         name: req.body.name,
@@ -55,6 +58,7 @@ router.post(`/`, async (req, res) =>{
     res.send(product);
 })
 
+//To updated a specific product
 router.put('/:id',async (req, res)=> {
     if(!mongoose.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid Product Id')
@@ -86,6 +90,7 @@ router.put('/:id',async (req, res)=> {
     res.send(product);
 })
 
+//To delete a specific product
 router.delete('/:id', (req, res)=>{
     Product.findByIdAndRemove(req.params.id).then(product =>{
         if(product) {
@@ -98,6 +103,7 @@ router.delete('/:id', (req, res)=>{
     })
 })
 
+//TO get count of all products
 router.get(`/get/count`, async (req, res) =>{
     const productCount = await Product.countDocuments()
 
@@ -110,6 +116,7 @@ router.get(`/get/count`, async (req, res) =>{
     });
 })
 
+//TO get count of all featured products
 router.get(`/get/featured/:count`, async (req, res) =>{
     const count = req.params.count ? req.params.count : 0 
     const products = await Product.find({isFeatured:true}).limit(+count)
