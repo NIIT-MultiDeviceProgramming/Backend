@@ -15,6 +15,7 @@ router.get(`/`, async (req, res) =>{
 
 
 router.get('/:id', async (req, res) =>{
+
     const user = await User.findById(req.params.id).select('-passwordHash');
 
     if(!user){
@@ -46,16 +47,25 @@ router.post('/', async (req, res) =>{
 })
 
 
-router.put('/:id', async (req, res)=> {
+router.put('/:id',async (req, res)=> {
+
+    const userExist = await User.findById(req.params.id);
+    let newPassword
+    if(req.body.password) {
+        newPassword = bcrypt.hashSync(req.body.password, 10)
+    } else {
+        newPassword = userExist.passwordHash;
+    }
+
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
             email: req.body.email,
-            color: req.body.color,
-            passwordHash:bcrypt.hashSync(req.body.password, 10),
+            passwordHash: newPassword,
             phone: req.body.phone,
             isAdmin: req.body.isAdmin,
+            street: req.body.street,
             apartment: req.body.apartment,
             zip: req.body.zip,
             city: req.body.city,
@@ -65,9 +75,23 @@ router.put('/:id', async (req, res)=> {
     )
 
     if(!user)
-    return res.status(400).send('The user cannot be created')
+    return res.status(400).send('the user cannot be created!')
 
     res.send(user);
+})
+router.post('/login', async(req,res)=>{
+    const user = await User.findOne({email: req.body.email})
+    if(user){
+        if(user && bcrypt.compareSync(req.body.password,user.passwordHash)){
+            res.status(200).send('User authenticated');
+        }
+        else{
+            res.status(400).send('Password is wrong!');
+        }
+       
+    }else{
+        res.status(400).send('The user not found!');
+    }
 })
 
 module.exports =router;
