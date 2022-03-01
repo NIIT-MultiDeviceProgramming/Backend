@@ -7,6 +7,8 @@ const mongoose =require('mongoose');
 const { stringify } = require('nodemon/lib/utils');
 const cors = require('cors');
 require('dotenv/config');
+const authJwt = require('./helpers/jwt');
+const errorHandler = require('./helpers/error-handler');
 
 
 app.use(cors());
@@ -16,14 +18,16 @@ app.options('*',cors());
 //middleware
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(authJwt());
+app.use(errorHandler);
 
 
 //routes
 const productsRoutes = require('./routes/products') ;
 const categoriesRoutes = require('./routes/categories');
 const ordersRoutes = require('./routes/orders');
+const usersRoutes = require('./routes/users');
 
-const usersRoutes = require('./routes/users')
 
 const api = process.env.API_URL;
 
