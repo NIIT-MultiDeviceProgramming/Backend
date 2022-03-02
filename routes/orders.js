@@ -13,14 +13,13 @@ router.get(`/`, async (req, res) =>{
 })
 
 router.post('/', async (req, res) =>{
-    const orderItemsIds = req.body.orderItems.map(orderItem =>{
+    const orderItemsIds = req.body.orderItems.map(async (orderItem) =>{
         let newOrderItem = new OrderItem({
             quantity: orderItem.quantity,
             product: orderItem.product
         })
 
         newOrderItem = await newOrderItem.save();
-
         return newOrderItem._id;
     })
 
