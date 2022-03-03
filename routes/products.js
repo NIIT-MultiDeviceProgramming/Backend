@@ -53,7 +53,7 @@ router.post(`/`, async (req, res) =>{
     product = await product.save();
 
     if(!product) 
-    return res.status(500).send('The product cannot be created')
+    return res.status(500).send('The product cannot be created!')
 
     res.send(product);
 })
@@ -61,10 +61,10 @@ router.post(`/`, async (req, res) =>{
 //To updated a specific product
 router.put('/:id',async (req, res)=> {
     if(!mongoose.isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid Product Id')
+        return res.status(400).send('Invalid Product Id!')
     }
     const category = await Category.findById(req.body.category);
-    if(!category) return res.status(400).send('Invalid Category')
+    if(!category) return res.status(400).send('Invalid Category!')
 
     const product = await Product.findByIdAndUpdate(
         req.params.id,
@@ -94,9 +94,9 @@ router.put('/:id',async (req, res)=> {
 router.delete('/:id', (req, res)=>{
     Product.findByIdAndRemove(req.params.id).then(product =>{
         if(product) {
-            return res.status(200).json({success: true, message: 'the product is deleted!'})
+            return res.status(200).json({success: true, message: 'The product is deleted!'})
         } else {
-            return res.status(404).json({success: false , message: "product not found!"})
+            return res.status(404).json({success: false , message: "PSroduct not found!"})
         }
     }).catch(err=>{
        return res.status(500).json({success: false, error: err}) 
