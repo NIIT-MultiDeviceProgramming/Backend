@@ -108,7 +108,6 @@ router.get(`/get/count`, async (req, res) =>{
     const productCount = await Product.countDocuments()
 
     if(!productCount) {
-        console.log('I ')
         res.status(500).json({success: false})
     } 
     res.send({
@@ -127,3 +126,4 @@ router.get(`/get/featured/:count`, async (req, res) =>{
     res.send(products);
 })
 module.exports =router;
+
