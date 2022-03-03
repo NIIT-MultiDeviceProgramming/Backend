@@ -1,4 +1,4 @@
-# initial-backend
+# backend
 This is the backend of the an e-commerce website build on MongoDB, Express.js, Node.JS. This backend will work for both React and Angular framework.  
 
 
