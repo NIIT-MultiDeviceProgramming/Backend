@@ -74,6 +74,27 @@ router.post('/', async (req,res)=>{
     res.send(order);
 })
 
+router.post('/create-checkout-session', async(req, res)=>{
+    const orderItems = req.body;
+    if(!orderItems){
+        return res.status(400).send('Checkout session cannot be created - check the order items')
+    }
+
+    const lineItems =  await Promise.all(
+        orderItems.map(async(orderItem)=>{
+            const product = await Product.findById(orderItem.product)
+            return{
+                price_data: {
+                    currency: 'inr',
+                    product_data: {
+                      name: product.name,
+                    },
+                    unit_amount: product.price * 100 ,
+                  },
+                  quantity: orderItem.quantity,
+            }
+        })
+    );
 
 router.put('/:id',async (req, res)=> {
     const order = await Order.findByIdAndUpdate(
