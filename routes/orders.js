@@ -3,13 +3,6 @@ const express = require('express');
 const { OrderItem } = require('../models/order-item');
 const router = express.Router();
 
-
-
-
-
-
-
-
 router.get(`/`, async (req, res) =>{
     const orderList = await Order.find().populate('user', 'name').sort({'dateOrdered': -1});
 
@@ -32,6 +25,11 @@ router.get(`/:id`, async (req, res) =>{
     } 
     res.send(order);
 })
+
+
+
+
+
 
 router.post('/', async (req,res)=>{
     const orderItemsIds = Promise.all(req.body.orderItems.map(async (orderItem) =>{
@@ -95,7 +93,15 @@ router.post('/create-checkout-session', async(req, res)=>{
             }
         })
     );
-
+    const session = await stripe.checkout.sessions.create({
+        payment_method_type : ['card'],
+        line_items :lineItems,
+        mode : 'payment',
+        success_url : 'http://localhost:4200/success',
+        cancel_url : 'http://localhost:4200/error'
+    })
+    res.json({id: session.id});
+});
 router.put('/:id',async (req, res)=> {
     const order = await Order.findByIdAndUpdate(
         req.params.id,
