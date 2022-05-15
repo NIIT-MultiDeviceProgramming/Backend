@@ -2,6 +2,8 @@ const {Order} = require('../models/order');
 const express = require('express');
 const { OrderItem } = require('../models/order-item');
 const router = express.Router();
+const stripe = require('stripe')('sk_test_51KxHonSAGofgKTlmhtDn0tqBdJ4tbQ69rZ5KXSMP9GQbwdjvD74Lt0qlA2Dx2bO2TY7hvrz2ih6SuyfnK6fwgxjx00dsRKDcF3')
+const { Product } = require('../models/product');
 
 router.get(`/`, async (req, res) =>{
     const orderList = await Order.find().populate('user', 'name').sort({'dateOrdered': -1});
